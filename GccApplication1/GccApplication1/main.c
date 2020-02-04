@@ -4,10 +4,12 @@
  * Created: 29/01/2020 12:42:50
  * Author : joelle
  */ 
-#define F_CP 8e0
+#define F_CPU 8e6
 
 #include <avr/io.h>
 #include <util/delay.h>
+
+void ButtonC0Pressed();
 
 void wait(int miliseconds)
 {
@@ -22,6 +24,7 @@ void wait(int miliseconds)
 int main(void)
 {
     /* Replace with your application code */
+	ButtonC0Pressed(); 
 	
 	
 }
@@ -43,6 +46,45 @@ void omenom(){
 
 }
 
+void ButtonC0Pressed()
+{
+	int state = 1; 
+	int waitTIme = 1000; 
+	DDRD = 0x00;
+	DDRD = 0b11111111;			// All pins PORTD are set to output
+	while (1)
+	{
+		if(PINC & 0x01){
+			if ( (state == 1))
+			{
+				waitTIme = 1000;
+				state = 0;
+				
+				}else if((state == 0)){
+				
+				waitTIme = 250;
+				state = 1;
+			}
+			
+			/*waitTIme = waitTIme/state; 
+			if(state > 3){
+				state = 1; 
+			}else{
+				state ++;
+			}*/
+			
+		}
+		
+		PORTD = 0x80;
+		wait(100);
+		
+		PORTD = 0x00;
+		wait(1000);
+	}
+}
+
+
+
 void eerste(){
 	 /*Replace with your application code */
 	 
@@ -55,7 +97,6 @@ void eerste(){
 	 wait( 250 );
 	 }
 	 
-	 return 1;
-
+	
 }
 
